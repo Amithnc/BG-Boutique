@@ -15,12 +15,10 @@ class Master(models.Model):
     updated_by= models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True,editable=False)
 
     def __str__(self):
-        t=str(self.masters_file)
-        return t[5:]   
+        return str(self.masters_file) 
 class Sale(models.Model):
     sales_file=models.FileField(upload_to='file',storage=OverwriteStorage(),help_text="please upload sales file")
     last_updated_on=models.DateTimeField(auto_now=True)
     updated_by= models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True,editable=False)
     def __str__(self):
-        t=str(self.sales_file)
-        return t[5:] 
+        return str(self.sales_file)
