@@ -1,4 +1,5 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import  get_object_or_404
+from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.apps import apps
 from django.utils.translation import ugettext as _
@@ -78,7 +79,7 @@ def add_permission(
     }
     if extra_context:
         context.update(extra_context)
-    return render_to_response(template_name, context, request)
+    return render(request,template_name,context,)
 
 
 @login_required

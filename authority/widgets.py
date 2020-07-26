@@ -19,13 +19,13 @@ function showGenericRelatedObjectLookupPopup(ct_select, triggering_link, url_bas
 """
 
 
-class GenericForeignKeyRawIdWidget(ForeignKeyRawIdWidget):
+class GenericForeignKeyRawIdWidget(forms.TextInput):
     def __init__(self, ct_field, cts=[], attrs=None):
         self.ct_field = ct_field
         self.cts = cts
         forms.TextInput.__init__(self, attrs)
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value,renderer=None, attrs=None):
         if attrs is None:
             attrs = {}
         related_url = "../../../"

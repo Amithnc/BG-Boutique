@@ -1,7 +1,7 @@
 from django import forms
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext, ungettext, ugettext_lazy as _
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.forms.formsets import all_valid
 from django.contrib import admin
@@ -40,6 +40,7 @@ class ActionPermissionInline(PermissionInline):
 
 class ActionErrorList(forms.utils.ErrorList):
     def __init__(self, inline_formsets):
+        super(ActionErrorList, self).__init__()
         for inline_formset in inline_formsets:
             self.extend(inline_formset.non_form_errors())
             for errors_in_inline_form in inline_formset.errors:
@@ -126,7 +127,8 @@ def edit_permissions(modeladmin, request, queryset):
             "admin/permission_change_form.html",
         ],
     )
-    return render_to_response(template_name, context, request)
+    return render(request,template_name,context)
+
 
 
 edit_permissions.short_description = _(
@@ -151,11 +153,11 @@ class PermissionAdmin(admin.ModelAdmin):
         # For generic foreign keys marked as generic_fields we use a special widget
         names = [
             f.fk_field
-            for f in self.model._meta.virtual_fields
+            for f in self.model._meta.private_fields
             if f.name in self.generic_fields
         ]
         if db_field.name in names:
-            for gfk in self.model._meta.virtual_fields:
+            for gfk in self.model._meta.private_fields:
                 if gfk.fk_field == db_field.name:
                     kwargs["widget"] = GenericForeignKeyRawIdWidget(
                         gfk.ct_field, self.admin_site._registry.keys()
