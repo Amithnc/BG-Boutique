@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Master
+from .models import Files
 from django.contrib.auth.models import User
 from authority.models import Permission
 
@@ -14,6 +14,6 @@ def fileview(request):
     a=Permission.objects.filter(codename='change',user_id=usrid)
     for i in a:
         objectlist.append(i.object_id) 
-    g=Master.objects.filter(id__in=objectlist)    
+    g=Files.objects.filter(id__in=objectlist)    
     print(g)    
     return render(request,'home.html')

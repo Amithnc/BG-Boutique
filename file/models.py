@@ -9,16 +9,20 @@ class OverwriteStorage(FileSystemStorage):
             os.remove(os.path.join(settings.MEDIA_ROOT, name))
         return name
 
-class Master(models.Model):
-    masters_file=models.FileField(upload_to='file',storage=OverwriteStorage(),help_text="please upload masters file")
+class Files(models.Model):
+    uploaded_file=models.FileField(upload_to='file',storage=OverwriteStorage(),help_text="please upload file",verbose_name='file')
     last_updated_on=models.DateTimeField(auto_now=True)
     updated_by= models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True,editable=False)
+    name=models.CharField(max_length=30,default='',blank=False,editable=False,help_text="this field will be auto poluted")
+
+    def save(self, *args, **kwargs):
+        extracted_name=str(self.uploaded_file)
+        extracted_name=extracted_name.split('.')
+        self.name=extracted_name[0]
+        super(Files, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.masters_file) 
-class Sale(models.Model):
-    sales_file=models.FileField(upload_to='file',storage=OverwriteStorage(),help_text="please upload sales file")
-    last_updated_on=models.DateTimeField(auto_now=True)
-    updated_by= models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True,editable=False)
-    def __str__(self):
-        return str(self.sales_file)
+        return str(self.name) 
+
+    class Meta:
+        verbose_name_plural = "files"
