@@ -1,0 +1,114 @@
+<!DOCTYPE html>{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <title>FILE</title>
+    <link rel="stylesheet" href="{% static 'css1/bootstrap.min.css' %}">
+    <style>
+        body{
+            background-repeat: no-repeat;
+            background: url('/media/images/pattern.jpg');
+            background-blend-mode:overlay;
+            background-size: cover;
+        }
+
+        h6 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  margin: 0 0 20px 0;
+  padding: 0;
+}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <h3><p class="text-left badge  badge-warning">hello!<strong> {{ request.user }}</strong></p></h3>
+        <h4><p class="text-left text-secondary ">Currenty you have these permissions !</h4>
+      </div>
+      <div class="col-sm-4">
+        <p class="text-center" ><a href="log-out/" data-toggle="tooltip" title="log out">
+            <button type="button" class="btn btn-danger">LOGOUT</button>
+        </a>
+        <a href="admin/password_change/" data-toggle="tooltip" title="log out">
+            <button type="button" class="btn btn-primary">change password</button>
+        </a>
+    </p>
+      </div>
+    </div>
+<div ng-app>
+    <div class="d-flex" id="wrapper">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <button class="btn btn-dark" ng-click="page='view'">download Files</button>
+                <button class="btn btn-primary" ng-click="page='change'">change Files</button>
+              </div>
+            </div>
+            <br> 
+            <div class="row">
+                <div ng-show="page === 'view'">
+                    <h4 class="text-success">these are the files you can download</h4>
+                    <table class="table table-bordered table-sm table-dark">
+                        <thead>
+                            <tr>
+                              <th scope="col"><h6><strong>Name</strong></h6></th>
+                              <th scope="col"><h6><strong>Last Updated on</strong></h6></th>
+                              <th scope="col"><h6><strong>Last updated by</strong></h6></th>
+                              <th scope="col"><h6><strong>File</strong></h6></th>
+                            </tr>
+                          </thead>
+                          {% for view in view.all %}
+                          <tbody>
+                            <tr>
+                              <th scope="row"><h5>{{ view.name }}</h5></th>
+                              <td><h6>{{ view.last_updated_on }}</h6></td>
+                              <td><h6>{{ view.updated_by }}</h6></td>
+                              <td>
+                                <p>
+                                    <a href="/media/{{view.uploaded_file}}" class="badge badge-pill badge-primary">download</a>
+                              </td>
+                            </tr>
+                        </tbody>
+                        {%endfor%}
+                    </table>
+                </div>
+                <div ng-show="page === 'change'">
+                    <h4 class="text-success">these are the files you can change</h4>
+                    <table class="table table-bordered table-sm table-dark">
+                        <thead>
+                            <tr>
+                              <th scope="col"><h6><strong>Name</strong></h6></th>
+                              <th scope="col"><h6><strong>Last Updated on</strong></h6></th>
+                              <th scope="col"><h6><strong>Last updated by</strong></h6></th>
+                              <th scope="col"><h6><strong>change-File</strong></h6></th>
+                            </tr>
+                          </thead>
+                          {% for change in changes.all %}
+                          <tbody>
+                            <tr>
+                              <th scope="row"><h5>{{ change.name }}</h5></th>
+                              <td><h6>{{ change.last_updated_on }}</h6></td>
+                              <td><h6>{{ change.updated_by }}</h6></td>
+                              <td>
+                                <p>
+                                    <!-- <a href="/media/{{view.uploaded_file}}" class="badge badge-pill badge-primary">download</a> -->
+                              </td>
+                            </tr>
+                        </tbody>
+                        {%endfor%}
+                </div>
+              <div class="col">
+              </div>
+            </div>
+          </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
+
+

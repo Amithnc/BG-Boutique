@@ -4,7 +4,7 @@ from django import forms
 
 admin.site.index_title="add files"
 admin.site.site_title="BG-Portal"
-admin.site.site_header="Log in to BG"
+admin.site.site_header="BG PORTAL" 
      
 class FilesAdmin(admin.ModelAdmin):
     list_display = ('name','last_updated_on','uploaded_file','updated_by')

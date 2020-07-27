@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -28,8 +27,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
-
+LOGIN_REDIRECT_URL = '/fileview'
 INSTALLED_APPS = [
     'file.apps.FileConfig',
     'django.contrib.admin',
