@@ -6,6 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <title>FILE</title>
     <link rel="stylesheet" href="{% static 'css1/bootstrap.min.css' %}">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> -->
     <style>
         body{
             background-repeat: no-repeat;
@@ -30,7 +31,13 @@
         <h4><p class="text-left text-secondary ">Currenty you have these permissions !</h4>
       </div>
       <div class="col-sm-4">
-        <p class="text-center" ><a href="log-out/" data-toggle="tooltip" title="log out">
+        <p class="text-center" >
+          {% if request.user.is_superuser %}
+          <a href="admin/" data-toggle="tooltip" title="admin pannel">
+            <button type="button" class="btn btn-dark">admin</button>
+          </a>
+          {% endif %}
+          <a href="log-out/" data-toggle="tooltip" title="log out">
             <button type="button" class="btn btn-danger">LOGOUT</button>
         </a>
         <a href="admin/password_change/" data-toggle="tooltip" title="log out">
@@ -85,7 +92,6 @@
                               <th scope="col"><h6><strong>Last Updated on</strong></h6></th>
                               <th scope="col"><h6><strong>Last updated by</strong></h6></th>
                               <th scope="col"><h6><strong>change-File</strong></h6></th>
-                              <th scope="col"><h6><strong>view</strong></h6></th>
                             </tr>
                           </thead>
                           <form action="/viewfile/" method="POST" id="viewform">
@@ -99,9 +105,6 @@
                               <td>
                                 <p>
                                     <a href="/update/{{change.id}}" class="badge badge-pill badge-warning">Update</a>
-                              </td>
-                              <td>
-                                <button type="submit" value="{{change.id}}" name="viewfiles"  form="viewform" class="badge badge-pill badge-primary">view</button>
                               </td>
                             </tr>
                         </tbody>
