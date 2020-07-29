@@ -14,6 +14,5 @@ urlpatterns = [
             })),
     path('log-out/',views.logout),
     path('update/<int:id>/', views.update,name='update'),
-    path('viewfile/',views.viewfiles,)
 ]    
     

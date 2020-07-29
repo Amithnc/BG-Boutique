@@ -52,13 +52,4 @@ def update(request, id):
 
     return render(request,'update.html',context)   
 
-def viewfiles(request):
-    context={ }
-    obj_id=request.POST.get('viewfiles',None)
-    viewfile=Files.objects.filter(id=int(obj_id))
-    for i in viewfile:
-        url=i.uploaded_file
-    print(url)    
-    context['url']='/media/'+str(url)
-    return render(request,'view.html',context)
 
