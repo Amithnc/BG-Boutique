@@ -1,14 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404,HttpResponseRedirect,redirect
 from .models import Files
 from django.contrib.auth.models import User
 from authority.models import Permission
 from django.contrib import auth
+from .forms import FilesForm 
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+import urllib
+
+
 
 @login_required(login_url='/log')
 def fileview(request):
-    change_obj_id=[]
     view_obj_id=[]
+    change_obj_id=[]
     u=request.user
     usrid=0
     m=User.objects.filter(username=u)
@@ -31,3 +36,29 @@ def fileview(request):
 def logout(request):
     auth.logout(request)
     return render(request,'logagain.html')
+
+def update(request, id):  
+    instance = get_object_or_404(Files,id=id)  
+    form = FilesForm(request.POST  or None,files=request.FILES,instance = instance)  
+    if request.method == "POST":
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.updated_by=request.user
+            profile.save()
+            return redirect("/")
+    context={}
+    context['instance']=instance  
+    context['form']=form  
+
+    return render(request,'update.html',context)   
+
+def viewfiles(request):
+    context={ }
+    obj_id=request.POST.get('viewfiles',None)
+    viewfile=Files.objects.filter(id=int(obj_id))
+    for i in viewfile:
+        url=i.uploaded_file
+    print(url)    
+    context['url']='/media/'+str(url)
+    return render(request,'view.html',context)
+

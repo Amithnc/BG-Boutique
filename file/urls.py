@@ -4,7 +4,7 @@ from . import views
 from django.contrib.auth.views import LoginView,LogoutView
 urlpatterns = [
     path('admin/',admin.site.urls),
-    path('',views.fileview),
+    path('',views.fileview,name='home'),
     path('log/',
         LoginView.as_view(
             template_name='admin/login.html',
@@ -13,5 +13,7 @@ urlpatterns = [
                 'site_title' : 'BG-Portal',
             })),
     path('log-out/',views.logout),
+    path('update/<int:id>/', views.update,name='update'),
+    path('viewfile/',views.viewfiles,)
 ]    
     

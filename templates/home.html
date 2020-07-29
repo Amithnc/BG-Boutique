@@ -64,7 +64,7 @@
                           {% for view in view.all %}
                           <tbody>
                             <tr>
-                              <th scope="row"><h5>{{ view.name }}</h5></th>
+                              <th scope="row"><h6>{{ view.name }}</h6></th>
                               <td><h6>{{ view.last_updated_on }}</h6></td>
                               <td><h6>{{ view.updated_by }}</h6></td>
                               <td>
@@ -85,21 +85,29 @@
                               <th scope="col"><h6><strong>Last Updated on</strong></h6></th>
                               <th scope="col"><h6><strong>Last updated by</strong></h6></th>
                               <th scope="col"><h6><strong>change-File</strong></h6></th>
+                              <th scope="col"><h6><strong>view</strong></h6></th>
                             </tr>
                           </thead>
+                          <form action="/viewfile/" method="POST" id="viewform">
+                            {% csrf_token %}
                           {% for change in changes.all %}
                           <tbody>
                             <tr>
-                              <th scope="row"><h5>{{ change.name }}</h5></th>
+                              <th scope="row"><h6>{{ change.name }}</h6></th>
                               <td><h6>{{ change.last_updated_on }}</h6></td>
                               <td><h6>{{ change.updated_by }}</h6></td>
                               <td>
                                 <p>
-                                    <!-- <a href="/media/{{view.uploaded_file}}" class="badge badge-pill badge-primary">download</a> -->
+                                    <a href="/update/{{change.id}}" class="badge badge-pill badge-warning">Update</a>
+                              </td>
+                              <td>
+                                <button type="submit" value="{{change.id}}" name="viewfiles"  form="viewform" class="badge badge-pill badge-primary">view</button>
                               </td>
                             </tr>
                         </tbody>
                         {%endfor%}
+                      </form>
+                        </table>
                 </div>
               <div class="col">
               </div>
