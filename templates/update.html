@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>FILE-update</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="{% static 'css1/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
     <style>
         body{
             background-repeat: no-repeat;
@@ -20,6 +21,10 @@
   margin: 0 0 20px 0;
   padding: 0;
 }
+.errorlist{
+    border: 2px red solid;
+    background-color: yellow
+}
     </style>
 </head>
 <body>
@@ -33,13 +38,10 @@
                             <form action="{% url 'update' instance.id  %}" method="post" enctype="multipart/form-data" >
                                 {% csrf_token %}
                                 <div class="container">
-                                    <div class="row">  
+                                    <div class="row">
                                          {{ form.as_p }}
-                                    </div>     
+                                    </div>
                                 </div>
-                                    <div class="alert alert-danger" role="alert">
-                                        <strong>unless you make any changes,dont click on update button</strong>
-                                      </div>
                                     <button class="btn btn-success" value="submit" type="submit">Update</button>
                                     <p class="text-right" ><a href="/" data-toggle="tooltip" title="cancel">
                                         <button type="button" class="btn btn-danger">cancel</button>
@@ -50,9 +52,8 @@
 <script>
     $(document).ready(function(){
   $("form").submit(function(){
-    alert("successfully updated");
+    alert("file will be updated click ok and wait until the file is uploaded");
   });
 });
-
 </script>
 </body>

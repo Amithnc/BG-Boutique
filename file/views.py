@@ -3,7 +3,7 @@ from .models import Files
 from django.contrib.auth.models import User
 from authority.models import Permission
 from django.contrib import auth
-from .forms import FilesForm 
+from .forms import FilesForm,FilesFormnovalidate
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
@@ -41,15 +41,19 @@ def logout(request):
     auth.logout(request)
     return render(request,'logagain.html')
 
+    
+@login_required(login_url='/log')
 def update(request, id):  
     instance = get_object_or_404(Files,id=id)  
-    form = FilesForm(request.POST  or None,files=request.FILES,instance = instance)  
     if request.method == "POST":
+        form = FilesForm(request.POST  or None,files=request.FILES,instance = instance)
         if form.is_valid():
             profile = form.save(commit=False)
             profile.updated_by=request.user
             profile.save()
             return redirect("/")
+    else:
+        form = FilesFormnovalidate(request.POST  or None,files=request.FILES,instance = instance)        
     context={}
     context['instance']=instance  
     context['form']=form  
