@@ -77,6 +77,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bg_main.wsgi.application'
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

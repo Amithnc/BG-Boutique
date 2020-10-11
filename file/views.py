@@ -6,7 +6,7 @@ from django.contrib import auth
 from .forms import FilesForm,FilesFormnovalidate
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-
+from django.contrib import messages
 
 
 
@@ -50,7 +50,9 @@ def update(request, id):
         if form.is_valid():
             profile = form.save(commit=False)
             profile.updated_by=request.user
+            filename=profile.name
             profile.save()
+            messages.success(request,"Successfully Updated  '"+filename+"' file")
             return redirect("/")
     else:
         form = FilesFormnovalidate(request.POST  or None,files=request.FILES,instance = instance)        
