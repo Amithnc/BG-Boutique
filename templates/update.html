@@ -6,7 +6,8 @@
     <title>FILE-update</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <style>
         body{
             background-repeat: no-repeat;
@@ -25,6 +26,9 @@
     border: 2px red solid;
     background-color: yellow
 }
+.not-visible{
+    display: none;
+}
     </style>
 </head>
 <body>
@@ -35,21 +39,128 @@
                         <div class="card-body">
                             <h3 class="text-center">Update {{instance.name}}</h3>
                             <hr>
-                            <form action="{% url 'update' instance.id  %}" method="post" enctype="multipart/form-data" >
+                            <form id="upload-form" action="{% url 'update' instance.id  %}" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="container">
                                     <div class="row">
                                          {{ form.as_p }}
                                     </div>
                                 </div>
-                                    <button class="btn btn-success" value="submit" type="submit">Update</button>
-                                    <p class="text-right" ><a href="/" data-toggle="tooltip" title="cancel">
-                                        <button type="button" class="btn btn-danger">cancel</button>
-                                    </a></p>
+                                <!-- <div id="progress-box" class="not-visible">
+                                        progress
+                                </div>
+                                <div id="cancel-box" class="not-visible" >
+                                    <button id="cancel-btn" class="btn btn-danger">cancel</button>
+                                </div>    -->
+                                    <div class="progress">
+                                    <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                      0%
+                                    </div>
+                                  </div>
+                                <input type="submit"> 
+                                <p class="text-right" ><a href="/" data-toggle="tooltip" title="GO BACK TO HOMEPAGE">
+                                    <button type="button" class="btn btn-warning">BACK</button>
+                                </a></p>
                             </form>
                         </div>
                     </div>
 <script>
+    // console.log('hello world')
+    // const uploadform=document.getElementById('upload-form')
+    // const input=document.getElementById('id_uploaded_file')
+    // console.log(input)
+    // const progressbox=document.getElementById('progress-box')
+    // const cancelbox=document.getElementById('cancel-box')
+    // const cancelbtn=document.getElementById('cancel-btn')
+
+
+    // const csrf=document.getElementsByName('csrfmiddlewaretoken')
+    
+    // input.addEventListener('change',()=>{
+    //     progressbox.classList.remove('not-visible')
+    //     cancelbox.classList.remove('not-visible')
+    //     const file_data=input.files[0]
+    //     console.log(file_data)
+
+    //     const fd=new FormData()
+    //     fd.append('csrfmiddlewaretoken',csrf[0].value)
+    //     fd.append('uploaded_file','file_data')
+    //     $.ajax({
+            
+    //         type:'POST',
+    //         url: uploadform.action,
+    //         enctype:'multipart/form-data',
+    //         data:fd,
+    //         beforeSend:function(xhr){
+    //             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    //              xhr.setRequestHeader('X-CSRFToken',csrf[0].value);
+
+    //         },
+    //         xhr:function(){
+    //             const xhr=new window.XMLHttpRequest();
+    //             xhr.upload.addEventListener('progress',e=>{
+    //                 console.log(e)
+    //             }) 
+    //             return xhr        
+    //         },
+    //         success:function(response){
+    //             console.log(response)
+    //         },
+    //         error :function(error){
+    //             console.log(error)
+    //         },
+    //         cache:false,
+    //         complete:false,
+    //         processData:false,
+
+    //     })
+    // })
+$(document).ready(function() {
+
+$('form').on('submit', function(event) {
+
+    event.preventDefault();
+
+    var formData = new FormData($('form')[0]);
+    const uploadform=document.getElementById('upload-form')
+    $.ajax({
+        xhr : function() {
+            var xhr = new window.XMLHttpRequest();
+
+            xhr.upload.addEventListener('progress', function(e) {
+
+                if (e.lengthComputable) {
+
+                    console.log('Bytes Loaded: ' + e.loaded);
+                    console.log('Total Size: ' + e.total);
+
+                    var percent = Math.round((e.loaded / e.total) * 100);
+                    console.log(percent)
+                    $('#progressBar').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%');
+
+                }
+
+            });
+
+            return xhr;
+        },
+        type : 'POST',
+        url : uploadform.action,
+        data : formData,
+        processData : false,
+        contentType : false,
+        success:function(response){
+                window.location="/" 
+            },
+        error :function(jqXHR, exception){
+                alert(jqXHR.responseText);
+            },    
+
+    });
+
+});
+
+});
     $(document).ready(function(){
   $("form").submit(function(){
     alert("file will be updated click ok and wait until the file is uploaded");

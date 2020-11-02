@@ -48,12 +48,14 @@ def update(request, id):
     if request.method == "POST":
         form = FilesForm(request.POST  or None,files=request.FILES,instance = instance)
         if form.is_valid():
-            profile = form.save(commit=False)
-            profile.updated_by=request.user
-            filename=profile.name
-            profile.save()
-            messages.success(request,"Successfully Updated  '"+filename+"' file")
-            return redirect("/")
+            if request.is_ajax():
+                profile = form.save(commit=False)
+                print(profile.uploaded_file)
+                profile.updated_by=request.user
+                filename=profile.name
+                profile.save()
+                messages.success(request,"Successfully Updated  '"+filename+"' file")
+                return redirect("/")
     else:
         form = FilesFormnovalidate(request.POST  or None,files=request.FILES,instance = instance)        
     context={}
