@@ -1,6 +1,6 @@
 from django import forms  
 from .models import Files  
-
+from django.http import JsonResponse
 from django.http import HttpResponse
 class FilesForm(forms.ModelForm):  
     class Meta:  
@@ -18,7 +18,7 @@ class FilesForm(forms.ModelForm):
         print(new,f)
         if new!=f:
             print("hi")
-            raise forms.ValidationError('**WRONG FILE !**  Please Make sure that you are updating the same file as above mentioned')
+            return JsonResponse({"message":"**WRONG FILE !**  Please Make sure that you are updating the same file as above mentioned"},status_code=400)
             # return HttpResponse('**WRONG FILE !**  Please Make sure that you are updating the same file as above mentioned')
         return self.cleaned_data
 
